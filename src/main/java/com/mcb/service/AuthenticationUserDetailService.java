@@ -16,7 +16,6 @@ import com.mcb.entity.User;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 public class AuthenticationUserDetailService implements UserDetailsService {
 
 	@Autowired

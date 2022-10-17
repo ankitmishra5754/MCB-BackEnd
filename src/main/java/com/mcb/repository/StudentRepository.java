@@ -14,7 +14,7 @@ import com.mcb.entity.Student;
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-	// @Query(value="select * from student where ")
+	@Query(value="select * from student where group_id = ?1 ;", nativeQuery = true)
 	List<Student> findAllByGroupIdIn(List<Long> groups);
 
 	@Modifying

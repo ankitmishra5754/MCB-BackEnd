@@ -15,6 +15,15 @@ public class Student {
 	private String lastName;
 	private Long groupId;
 	
+	public Student() {}
+	
+	public Student(Long studentId, String firstName, String lastName, Long groupId){
+		this.studentId = studentId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.groupId = groupId;
+	}
+	
 	/**
 	 * @return the studentId
 	 */

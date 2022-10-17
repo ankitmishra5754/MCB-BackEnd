@@ -1,4 +1,4 @@
-package com.mcb.assessment;
+package com.mcb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

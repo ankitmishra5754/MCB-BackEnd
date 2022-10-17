@@ -61,7 +61,7 @@ import com.mcb.util.JwtUtil;
 					HttpStatus.OK);
 
 		user= userService.resetAttemptToZero(userDTO.getUsername());
-		return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse(jwt,user.getRole(),null),
+		return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse(jwt,user.getRole(),0),
 				HttpStatus.OK);
 	}
 	

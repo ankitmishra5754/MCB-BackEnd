@@ -1,31 +1,27 @@
 package com.mcb.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 
 @Data
 @ToString
 public class UserDTO {
 	private long id;
-	private String username;
+	private String userName;
 	private String password;
 	private String role;
-	
-	public UserDTO(){
+
+	public UserDTO() {
 	}
 
-	public UserDTO(long id,String username, String password, String role) {
+	public UserDTO(long id, String userName, String password, String role) {
 		super();
 		this.id = id;
-		this.username = username;
+		this.userName = userName;
 		this.password = password;
 		this.role = role;
 	}
 
-	
 	public long getId() {
 		return id;
 	}
@@ -34,12 +30,12 @@ public class UserDTO {
 		this.id = id;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public String getPassword() {
@@ -57,5 +53,5 @@ public class UserDTO {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	
+
 }

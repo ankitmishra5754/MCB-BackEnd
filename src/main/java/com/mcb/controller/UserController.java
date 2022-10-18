@@ -20,54 +20,56 @@ import com.mcb.service.AuthenticationUserDetailService;
 import com.mcb.service.UserService;
 import com.mcb.util.JwtUtil;
 
-
 @RestController
 @RequestMapping("/user")
- class UserController {
+class UserController {
 
 	@Autowired
 	private JwtUtil jwtUtil;
-	
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private AuthenticationUserDetailService authenticationUserDetailService;
-	
+
 	@Autowired
 	private UserService userService;
 
 	@PostMapping("/authenticate")
-	public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody UserDTO userDTO) throws Exception {
+	public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody UserDTO userDTO)
+			throws Exception {
 		try {
+			System.out.println(
+					"inside authenticate : User Dto : " + userDTO.getUserName() + " ," + userDTO.getPassword());
 			authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(userDTO.getUsername(),userDTO.getPassword())
-					);
-		}catch(BadCredentialsException e) {
-			User user= userService.updateAttempt(userDTO.getUsername());
-			if(user!=null && user.getAttempt()>=3) {
-				return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse("User has been blocked",null,user.getAttempt()),
-						HttpStatus.OK);
+					new UsernamePasswordAuthenticationToken(userDTO.getUserName(), userDTO.getPassword()));
+		} catch (BadCredentialsException e) {
+			User user = userService.updateAttempt(userDTO.getUserName());
+			if (user != null && user.getAttempt() >= 3) {
+				return new ResponseEntity<AuthenticationResponse>(
+						new AuthenticationResponse("User has been blocked", null, user.getAttempt()), HttpStatus.OK);
 			}
-				
-			return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse(e.getMessage(),null,user.getAttempt()),HttpStatus.OK);
-		}
-		
-		final UserDetails userDetails=authenticationUserDetailService.loadUserByUsername(userDTO.getUsername());
-		final String jwt=jwtUtil.generateToken(userDetails);
-		User user= userService.getUserByUsername(userDTO.getUsername());
-		if(user!=null && user.getAttempt()>=3)
-			return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse("User Blocked",null,user.getAttempt()),
-					HttpStatus.OK);
 
-		user= userService.resetAttemptToZero(userDTO.getUsername());
-		return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse(jwt,user.getRole(),0),
+			return new ResponseEntity<AuthenticationResponse>(
+					new AuthenticationResponse(e.getMessage(), null, user.getAttempt()), HttpStatus.OK);
+		}
+
+		final UserDetails userDetails = authenticationUserDetailService.loadUserByUsername(userDTO.getUserName());
+		final String jwt = jwtUtil.generateToken(userDetails);
+		User user = userService.getUserByUsername(userDTO.getUserName());
+		if (user != null && user.getAttempt() >= 3)
+			return new ResponseEntity<AuthenticationResponse>(
+					new AuthenticationResponse("User Blocked", null, user.getAttempt()), HttpStatus.OK);
+
+		user = userService.resetAttemptToZero(userDTO.getUserName());
+		return new ResponseEntity<AuthenticationResponse>(new AuthenticationResponse(jwt, user.getRole(), 0),
 				HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/logout")
 	public ResponseEntity<String> logOut(@RequestBody UserDTO userDTO) {
-		return new ResponseEntity<String>(jwtUtil.invalidToken(userDTO.getUsername()),HttpStatus.OK);
+		return new ResponseEntity<String>(jwtUtil.invalidToken(userDTO.getUserName()), HttpStatus.OK);
 	}
 
 	@PostMapping
@@ -76,5 +78,4 @@ import com.mcb.util.JwtUtil;
 		return new ResponseEntity<>("User Created", HttpStatus.OK);
 	}
 
-	
 }

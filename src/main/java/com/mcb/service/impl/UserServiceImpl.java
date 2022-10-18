@@ -41,12 +41,12 @@ public class UserServiceImpl implements UserService {
 
 	public void createUser(UserDTO userDTO) {
 		User user = new User();
-		Optional<User> byUsername = userRepository.findByUsername(userDTO.getUsername());
+		Optional<User> byUsername = userRepository.findByUsername(userDTO.getUserName());
 		if (byUsername.isPresent()) {
 			throw new RuntimeException("User already registered. Please use different username.");
 		}
 		user.setId(userDTO.getId());
-		user.setUsername(userDTO.getUsername());
+		user.setUsername(userDTO.getUserName());
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 		user.setRole(userDTO.getRole());
 		userRepository.save(user);
